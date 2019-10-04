@@ -71,12 +71,17 @@ section I.introdution
 
 #### WHAT CHARACTERIZES UNSUCCESSFUL JOBS IN LARGE CLUSTERS
 对于这个问题，有三个特征：
+
+一个job由一个或多个task组成。分为multi-task job和single-task job
 1. job duration
-通过batch_task中的end_time-start_time可以得到每一个task的持续时间
+通过batch_task中的end_time-start_time可以得到每一个task的持续时间，而要计算job duration则要取没有个job中开始最早的task的start-time和开始最晚的end-time做差得到
+job分类：含有Failed的task归为Failed类
+
 分以下三类统计平均时长：通过batch task中的status分类
- failed 
- killed
- completed
+
+Terminated 
+Failed  
+Running 
 
 
 2. degree of parallelism
@@ -90,4 +95,16 @@ section I.introdution
 3. usage of cluster resources
 画出不同类型的工作预先请求的资源量的平均值，比较大小
 在本数据batch task中有 plan_cpu plan_mem 两个变量可以直接用来比较
-然后
+
+
+### mapreduce code method
+
+#### jobduration 
+file:   mapper_start->print line {job_name}  {start_time}    
+        reducer_start->combine the pair by selecting the smaller start_tima
+        mapper_end->print line {job_name}  {end_time}
+        reducer_start->combine the pair by selecting the bigger end_time
+        reducer_total->combine the 
+
+
+        
